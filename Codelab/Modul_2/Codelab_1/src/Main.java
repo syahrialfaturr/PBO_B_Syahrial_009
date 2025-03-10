@@ -1,19 +1,13 @@
+// Kelas main untuk menjalankan program
 public class Main {
     public static void main(String[] args){
-        Hewan hewan1 = new Hewan();
-        Hewan hewan2 = new Hewan();
+        // Membuat objek hewan dengan parameter nama, suara, dan jenis
+       Hewan hewan1 = new Hewan("Kucing", "Nyann~~", "Mamalia");
+       Hewan hewan2 = new Hewan("Anjing", "Woof-Woof!!", "Mamalia");
 
-        hewan1.nama = "Kucing";
-        hewan2.nama = "Anjing";
-
-        hewan1.jenis = "Mamalia";
-        hewan2.jenis = "Mamalia";
-
-        hewan1.suara = "Nyann~~";
-        hewan2.suara = "Woof-Woof!!";
-
-        hewan1.tampilkanInfo();
-        hewan2.tampilkanInfo();
+       //Memanggil method infoHewan() untuk menampilkan informasi hewan
+        hewan1.infoHewan();
+        hewan2.infoHewan();
 
     }
 }

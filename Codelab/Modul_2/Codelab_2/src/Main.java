@@ -1,27 +1,24 @@
+// Kelas main untuk menjalankan program
 public class Main {
     public static void  main(String[] args) {
-        RekeningBank rekening1 = new RekeningBank();
-        RekeningBank rekening2 = new RekeningBank();
+        // Membuat objek rekening dengan menggunakan konstruktor
+        RekeningBank rekening1 = new RekeningBank("202410370110009", "Syahrial Nur Faturrahman", 1000000);
+        RekeningBank rekening2 = new RekeningBank("202410370110017", "Farid Al Farizi", 500000);
 
-        rekening1.namaPemilik = "Syahrial Nur Faturrahman";
-        rekening2.namaPemilik = "Farid Al Farizi";
+        // Menampilkan informasi awal rekening
+        rekening1.infoRekening();
+        rekening2.infoRekening();
 
-        rekening1.nomorRekening = "202410370110009";
-        rekening2.nomorRekening = "202410370110017";
+        //Melakukan transaksi setoran
+        rekening1.setorUang(500000); // Syahrial setor uang Rp500.000
+        rekening2.setorUang(200000); // Farid setor uang Rp200.000
 
-        rekening1.saldo = 1000000;
-        rekening2.saldo = 500000;
+        // Melakukan transaksi penarikan
+        rekening1.tarikUang(500000); // Syahrial menarik Rp500.000
+        rekening2.tarikUang(800000); // Farid menarik Rp800.000 (saldo tidak cukup)
 
-        rekening1.tampilkanInfo();
-        rekening2.tampilkanInfo();
-
-        rekening1.setorUang(500000);
-        rekening2.setorUang(200000);
-
-        rekening1.tarikUang(500000);
-        rekening2.tarikUang(800000);
-
-        rekening1.tampilkanInfo();
-        rekening2.tampilkanInfo();
+        //Menampilkan informasi rekening setelah transaksi
+        rekening1.infoRekening();
+        rekening2.infoRekening();
     }
 }
