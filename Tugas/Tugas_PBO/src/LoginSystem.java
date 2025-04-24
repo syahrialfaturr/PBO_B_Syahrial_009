@@ -2,10 +2,11 @@ import java.util.Scanner;
 
 public class LoginSystem {
     public static void main(String[] args) {
-        Admin admin = new Admin();
-        Mahasiswa mahasiswa = new Mahasiswa();
 
-        int pilihan;
+        Admin admin = new Admin("Syahrial", "009", "Admin009", "Password009");
+        Mahasiswa mahasiswa = new Mahasiswa("Syahrial Nur Faturrahman", "202410370110009");
+
+        int  pilihan;
         Scanner opsi = new Scanner(System.in);
 
         System.out.println("Pilihan login: ");

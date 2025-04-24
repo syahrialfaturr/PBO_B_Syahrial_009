@@ -1,18 +1,21 @@
-public class Mahasiswa {
-    String namaMhs = "Syahrial Nur Faturrahman";
-    String nimMhs = "202410370110009";
-
-    void login(String nama, String nim) {
-        if (nama.equals(namaMhs) && nim.equals(nimMhs)){
-            displayInfo();
-        } else {
-            System.out.println("Login gagal! Nama atau NIM salah.");
-        }
+public class Mahasiswa extends User {
+    public Mahasiswa(String nama, String nim) {
+        super(nama, nim);
     }
 
-    void displayInfo() {
+    @Override
+    public void login(String nama, String nim) {
+        if (nama.equals(getNama()) && nim.equals(getNim())) {
+            displayInfo();
+        }else {
+            System.out.println("Login gagal! Nama atau NIM salah");
+        }
+    }
+    @Override
+    public void displayInfo() {
         System.out.println("Login Mahasiswa berhasil!");
-        System.out.println("Nama: " + namaMhs);
-        System.out.println("NIM: " + nimMhs);
+        System.out.println("Informasi Mahasiswa: ");
+        System.out.println("Nama: " + getNama());
+        System.out.println("NIM: " + getNim());
     }
 }
