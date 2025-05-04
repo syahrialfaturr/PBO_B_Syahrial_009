@@ -1,4 +1,6 @@
-public class User {
+package com.praktikum.users;
+
+public abstract class User {
     private String nama;
     private String nim;
 
@@ -27,8 +29,10 @@ public class User {
     }
 
     public void displayInfo() {
-        System.out.println("Informasi User: ");
+        System.out.println("Informasi com.praktikum.users.User: ");
         System.out.println("Nama: " + nama);
         System.out.println("NIM: " + nim);
     }
+
+    public abstract void displayAppMenu();
 }
