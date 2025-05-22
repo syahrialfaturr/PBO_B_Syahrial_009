@@ -25,11 +25,10 @@ public abstract class User {
         this.nim = nim;
     }
 
-    public void login(String input1, String input2) {
-    }
+    public abstract void login(String input1, String input2);
 
     public void displayInfo() {
-        System.out.println("Informasi com.praktikum.users.User: ");
+        System.out.println("Informasi User: ");
         System.out.println("Nama: " + nama);
         System.out.println("NIM: " + nim);
     }

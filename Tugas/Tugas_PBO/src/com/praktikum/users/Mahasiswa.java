@@ -1,6 +1,11 @@
 package com.praktikum.users;
 
 import com.praktikum.actions.MahasiswaActions;
+import com.praktikum.main.LoginSystem;
+import com.praktikum.data.Item;
+
+import java.util.InputMismatchException;
+import java.util.Iterator;
 import java.util.Scanner;
 
 public class Mahasiswa extends User implements MahasiswaActions {
@@ -28,21 +33,52 @@ public class Mahasiswa extends User implements MahasiswaActions {
 
     @Override
     public void reportItem(){
-        System.out.println("Nama Barang: ");
+        System.out.print("Nama Barang: ");
         String namaBarang = scanner.nextLine();
-        System.out.println("Deskripsi Barang: ");
+        System.out.print("Deskripsi Barang: ");
         String deskripsiBarang = scanner.nextLine();
-        System.out.println("Lokasi Terakhir/Ditemukan: ");
+        System.out.print("Lokasi Terakhir/Ditemukan: ");
         String lokasiBarang = scanner.nextLine();
 
         System.out.println("==Konfirmasi==");
         System.out.println("Nama Barang: " + namaBarang);
         System.out.println("Deskripsi Barang: " + deskripsiBarang);
         System.out.println("Lokasi: " + lokasiBarang);
+
+        Item item = new Item(namaBarang, deskripsiBarang, lokasiBarang);
+        LoginSystem.reportedItems.add(item);
+        System.out.println("Barang berhasil dilaporkan!");
+
     }
     @Override
     public void viewReportedItems(){
-        System.out.println(">> Fitur Lihat Laporan Belum Tersedia <<");
+//        System.out.println(">> Fitur Lihat Laporan Belum Tersedia <<");
+        // cek apakah list kosong
+        if (LoginSystem.reportedItems.isEmpty()) {
+            System.out.println("Belum ada laporan barang.");
+            return;
+        }
+
+        System.out.println("\n=== Daftar Barang yang Dilaporkan ===");
+        // menggunakan iterator untuk mengakses list
+        Iterator<Item> iterator = LoginSystem.reportedItems.iterator();
+        boolean laporanItem = false;
+
+        while (iterator.hasNext()) {
+            Item item = iterator.next();
+            // hanya tampilkan item dengan status "Reported"
+            if (item.getStatus().equals("Reported")) {
+                System.out.println("Nama Barang: " + item.getItemName());
+                System.out.println("Deskripsi: " + item.getDescription());
+                System.out.println("Lokasi: " + item.getLocation());
+                System.out.println("-----------------------------------");
+                laporanItem = true;
+            }
+        }
+
+        if (!laporanItem) {
+            System.out.println("Tidak ada barang dengan status 'Reported'.");
+        }
     }
     @Override
     public void displayAppMenu(){
@@ -53,17 +89,27 @@ public class Mahasiswa extends User implements MahasiswaActions {
            System.out.println("2. Lihat Daftar Laporan");
            System.out.println("0. Logout");
            System.out.print("Pilih menu: ");
-           pilihan = scanner.nextInt();
-           scanner.nextLine();
+           try {
+               pilihan = scanner.nextInt();
+               scanner.nextLine();
 
-           if (pilihan == 1) {
-               reportItem();
-           }else if (pilihan == 2) {
-               viewReportedItems();
-           }else if (pilihan == 0) {
-               System.out.println("Logout.");
-           }else {
-               System.out.println("Pilihan tidak valid.");
+               switch (pilihan) {
+                   case 1:
+                       reportItem();
+                       break;
+                   case 2:
+                       viewReportedItems();
+                       break;
+                   case 0:
+                       System.out.println("Logout.");
+                       break;
+                   default:
+                       System.out.println("Pilihan tidak valid.");
+               }
+           } catch (InputMismatchException e) {
+               System.out.println("Error: Input harus berupa angka!");
+               scanner.nextLine();
+               pilihan = -1;
            }
        } while (pilihan != 0);
     }
