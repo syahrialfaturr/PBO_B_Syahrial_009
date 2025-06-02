@@ -1,7 +1,7 @@
 package com.praktikum.users;
 
 import com.praktikum.actions.MahasiswaActions;
-import com.praktikum.main.LoginSystem;
+import com.praktikum.data.DataStore;
 import com.praktikum.data.Item;
 
 import java.util.InputMismatchException;
@@ -19,10 +19,11 @@ public class Mahasiswa extends User implements MahasiswaActions {
     public void login(String nama, String nim) {
         if (nama.equals(getNama()) && nim.equals(getNim())) {
             displayInfo();
-        }else {
+        } else {
             System.out.println("Login gagal! Nama atau NIM salah");
         }
     }
+
     @Override
     public void displayInfo() {
         System.out.println("Login Mahasiswa berhasil!");
@@ -46,27 +47,23 @@ public class Mahasiswa extends User implements MahasiswaActions {
         System.out.println("Lokasi: " + lokasiBarang);
 
         Item item = new Item(namaBarang, deskripsiBarang, lokasiBarang);
-        LoginSystem.reportedItems.add(item);
+        DataStore.reportedItems.add(item);
         System.out.println("Barang berhasil dilaporkan!");
-
     }
+
     @Override
     public void viewReportedItems(){
-//        System.out.println(">> Fitur Lihat Laporan Belum Tersedia <<");
-        // cek apakah list kosong
-        if (LoginSystem.reportedItems.isEmpty()) {
+        if (DataStore.reportedItems.isEmpty()) {
             System.out.println("Belum ada laporan barang.");
             return;
         }
 
         System.out.println("\n=== Daftar Barang yang Dilaporkan ===");
-        // menggunakan iterator untuk mengakses list
-        Iterator<Item> iterator = LoginSystem.reportedItems.iterator();
+        Iterator<Item> iterator = DataStore.reportedItems.iterator();
         boolean laporanItem = false;
 
         while (iterator.hasNext()) {
             Item item = iterator.next();
-            // hanya tampilkan item dengan status "Reported"
             if (item.getStatus().equals("Reported")) {
                 System.out.println("Nama Barang: " + item.getItemName());
                 System.out.println("Deskripsi: " + item.getDescription());
@@ -80,37 +77,38 @@ public class Mahasiswa extends User implements MahasiswaActions {
             System.out.println("Tidak ada barang dengan status 'Reported'.");
         }
     }
+
     @Override
     public void displayAppMenu(){
-       int pilihan;
-       do {
-           System.out.println("\n == Menu Mahasiswa ==");
-           System.out.println("1. Laporkan Barang Temuan/Hilang");
-           System.out.println("2. Lihat Daftar Laporan");
-           System.out.println("0. Logout");
-           System.out.print("Pilih menu: ");
-           try {
-               pilihan = scanner.nextInt();
-               scanner.nextLine();
+        int pilihan;
+        do {
+            System.out.println("\n == Menu Mahasiswa ==");
+            System.out.println("1. Laporkan Barang Temuan/Hilang");
+            System.out.println("2. Lihat Daftar Laporan");
+            System.out.println("0. Logout");
+            System.out.print("Pilih menu: ");
+            try {
+                pilihan = scanner.nextInt();
+                scanner.nextLine();
 
-               switch (pilihan) {
-                   case 1:
-                       reportItem();
-                       break;
-                   case 2:
-                       viewReportedItems();
-                       break;
-                   case 0:
-                       System.out.println("Logout.");
-                       break;
-                   default:
-                       System.out.println("Pilihan tidak valid.");
-               }
-           } catch (InputMismatchException e) {
-               System.out.println("Error: Input harus berupa angka!");
-               scanner.nextLine();
-               pilihan = -1;
-           }
-       } while (pilihan != 0);
+                switch (pilihan) {
+                    case 1:
+                        reportItem();
+                        break;
+                    case 2:
+                        viewReportedItems();
+                        break;
+                    case 0:
+                        System.out.println("Logout.");
+                        break;
+                    default:
+                        System.out.println("Pilihan tidak valid.");
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Error: Input harus berupa angka!");
+                scanner.nextLine();
+                pilihan = -1;
+            }
+        } while (pilihan != 0);
     }
 }

@@ -1,7 +1,7 @@
 package com.praktikum.users;
 
 import com.praktikum.actions.AdminActions;
-import com.praktikum.main.LoginSystem;
+import com.praktikum.data.DataStore;
 import com.praktikum.data.Item;
 
 import java.util.InputMismatchException;
@@ -42,15 +42,13 @@ public class Admin extends User implements AdminActions {
         System.out.println("Username: " + username);
     }
 
-
     @Override
     public void manageItems() {
         int pilihan;
-//        System.out.println(">> Fitur Kelola Barang Belum Tersedia <<");
         do {
             System.out.println("\n== Kelola Barang ==");
             System.out.println("1. Lihat semua laporan");
-            System.out.println("2. Tandai barang telah diammbil");
+            System.out.println("2. Tandai barang telah diambil");
             System.out.println("0. Kembali");
             System.out.print("Masukkan pilihan: ");
 
@@ -80,13 +78,13 @@ public class Admin extends User implements AdminActions {
     }
 
     private void lihatSemuaItem() {
-        if (LoginSystem.reportedItems.isEmpty()) {
+        if (DataStore.reportedItems.isEmpty()) {
             System.out.println("Belum ada laporan barang.");
             return;
         }
         System.out.println("\n=== Daftar Semua Barang ===");
         int index = 0;
-        for (Item item : LoginSystem.reportedItems) {
+        for (Item item : DataStore.reportedItems) {
             System.out.println("Index: " + index);
             System.out.println("Nama Barang: " + item.getItemName());
             System.out.println("Deskripsi: " + item.getDescription());
@@ -98,11 +96,10 @@ public class Admin extends User implements AdminActions {
     }
 
     private void tandaiItemClaimed() {
-        // tampilkan barang dengan status reported
         System.out.println("\n=== Barang yang belum diambil ===");
         int count = 0;
-        for (int i = 0; i < LoginSystem.reportedItems.size(); i++) {
-            Item item = LoginSystem.reportedItems.get(i);
+        for (int i = 0; i < DataStore.reportedItems.size(); i++) {
+            Item item = DataStore.reportedItems.get(i);
             if (item.getStatus().equals("Reported")) {
                 System.out.println("Index: " + i);
                 System.out.println("Nama Barang: " + item.getItemName());
@@ -122,8 +119,8 @@ public class Admin extends User implements AdminActions {
             int index = scanner.nextInt();
             scanner.nextLine();
 
-            if (index >= 0 && index < LoginSystem.reportedItems.size()) {
-                Item item = LoginSystem.reportedItems.get(index);
+            if (index >= 0 && index < DataStore.reportedItems.size()) {
+                Item item = DataStore.reportedItems.get(index);
                 if (item.getStatus().equals("Reported")) {
                     item.setStatus("Claimed");
                     System.out.println("Barang '" + item.getItemName() + "' telah ditandai sebagai 'Claimed'");
@@ -140,10 +137,10 @@ public class Admin extends User implements AdminActions {
             System.out.println("Error: Index di luar batas array!");
         }
     }
+
     @Override
     public void manageUsers() {
         int pilihan;
-//        System.out.println(">> Fitur Kelola Mahasiswa Belum Tersedia <<");
         do {
             System.out.println("\n== Kelola Mahasiswa ==");
             System.out.println("1. Tambah Mahasiswa");
@@ -170,7 +167,7 @@ public class Admin extends User implements AdminActions {
                         System.out.println("Kembali ke menu utama.");
                         break;
                     default:
-                        System.out.println("Piilihan tidak valid.");
+                        System.out.println("Pilihan tidak valid.");
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Error: Input harus berupa angka!");
@@ -179,28 +176,27 @@ public class Admin extends User implements AdminActions {
             }
         } while (pilihan !=0);
     }
+
     private void tambahMahasiswa() {
         System.out.println("Masukkan nama mahasiswa: ");
         String nama = scanner.nextLine();
         System.out.println("Masukkan NIM mahasiswa: ");
         String nim = scanner.nextLine();
 
-        // validasi input
         if (nama.isEmpty() || nim.isEmpty()) {
-            System.out.println("Nama dan NIM tidak boleh kososng!");
+            System.out.println("Nama dan NIM tidak boleh kosong!");
             return;
         }
 
-        // cek apakah nim sudah terdaftar
-        for (User user : LoginSystem.userList) {
+        for (User user : DataStore.userList) {
             if (user instanceof Mahasiswa && user.getNim().equals(nim)) {
                 System.out.println("NIM sudah terdaftar!");
                 return;
             }
         }
-        // Tambah mahasiswa baru
+
         Mahasiswa newMahasiswa = new Mahasiswa(nama, nim);
-        LoginSystem.userList.add(newMahasiswa);
+        DataStore.userList.add(newMahasiswa);
         System.out.println("Mahasiswa berhasil ditambahkan!");
     }
 
@@ -209,10 +205,10 @@ public class Admin extends User implements AdminActions {
         String nim = scanner.nextLine();
 
         boolean temukan = false;
-        for (int i = 0; i < LoginSystem.userList.size(); i++) {
-            User user = LoginSystem.userList.get(i);
+        for (int i = 0; i < DataStore.userList.size(); i++) {
+            User user = DataStore.userList.get(i);
             if (user instanceof Mahasiswa && user.getNim().equals(nim)) {
-                LoginSystem.userList.remove(i);
+                DataStore.userList.remove(i);
                 System.out.println("Mahasiswa dengan NIM " + nim + " berhasil dihapus!");
                 temukan = true;
                 break;
@@ -227,7 +223,7 @@ public class Admin extends User implements AdminActions {
         System.out.println("\n=== Daftar Mahasiswa ===");
         boolean lihatMahasiswa = false;
 
-        for (User user : LoginSystem.userList) {
+        for (User user : DataStore.userList) {
             if (user instanceof Mahasiswa) {
                 System.out.println("Nama: " + user.getNama());
                 System.out.println("NIM: " + user.getNim());
@@ -240,6 +236,7 @@ public class Admin extends User implements AdminActions {
             System.out.println("Tidak ada mahasiswa yang terdaftar.");
         }
     }
+
     @Override
     public void displayAppMenu(){
         int pilihan;
